@@ -58,7 +58,6 @@ let timer;
 
 const questionElement = document.getElementById("question");
 const answersContainer = document.getElementById("answers-container");
-const nextButton = document.getElementById("next-btn");
 const restartButton = document.getElementById("restart-btn");
 const scoreElement = document.getElementById("score");
 const timerElement = document.getElementById("timer-count");
@@ -81,65 +80,49 @@ function startTimer() {
         if (timeLeft <= 0) {
             clearInterval(timer);
             disableAnswers();
-            nextButton.classList.remove('hidden');
+            setTimeout(nextQuestion, 1000);
         }
     }, 1000);
 }
 
 function showQuestion() {
-    resetState();
+    clearInterval(timer);
     startTimer();
-    const question = questions[currentQuestionIndex];
-    questionElement.innerText = question.question;
-    question.answers.forEach(answer => {
-        const button = document.createElement('button');
-        button.classList.add('answer-btn');
-        button.innerText = answer.text;
-        button.dataset.correct = answer.correct;
-        button.addEventListener('click', selectAnswer);
+    const currentQuestion = questions[currentQuestionIndex];
+    questionElement.textContent = currentQuestion.question;
+    answersContainer.innerHTML = "";
+    currentQuestion.answers.forEach((answer, index) => {
+        const button = document.createElement("button");
+        button.textContent = answer.text;
+        button.classList.add("btn");
+        button.addEventListener("click", () => checkAnswer(answer, button, currentQuestion.explanation));
         answersContainer.appendChild(button);
     });
+    feedbackMessage.innerHTML = "";
+    explanationElement.classList.add("d-none");
 }
 
-function resetState() {
-    clearInterval(timer);
-    nextButton.classList.add('hidden');
-    restartButton.classList.add('hidden');
-    answersContainer.innerHTML = '';
-    feedbackMessage.textContent = '';
-    explanationElement.textContent = '';
-    explanationElement.classList.remove('show');
-}
-
-function selectAnswer(e) {
-    clearInterval(timer);
-    const selectedButton = e.target;
-    const isCorrect = selectedButton.dataset.correct === "true";
-    const currentQuestion = questions[currentQuestionIndex];
-
-    if (isCorrect) {
+function checkAnswer(answer, button, explanation) {
+    if (answer.correct) {
         score++;
-        feedbackMessage.textContent = "Correto! 👍";
+        scoreElement.textContent = score;
+        feedbackMessage.innerHTML = "<span class='text-success'>Resposta Correta!</span>";
+        button.classList.add("btn-success");
     } else {
-        feedbackMessage.textContent = "Errado! ❌";
-        explanationElement.textContent = currentQuestion.explanation;
-        explanationElement.classList.add('show');
+        feedbackMessage.innerHTML = "<span class='text-danger'>Resposta Errada!</span>";
+        button.classList.add("btn-danger");
     }
-
-    scoreElement.textContent = score;
-    Array.from(answersContainer.children).forEach(button => {
-        setStatusClass(button, button.dataset.correct === "true");
-        button.disabled = true;
-    });
-    nextButton.classList.remove('hidden');
+    disableAnswers();
+    explanationElement.textContent = explanation;
+    explanationElement.classList.remove("d-none");
+    
+    // Aguardar 3 segundos (3000 ms) antes de ir para a próxima pergunta
+    setTimeout(nextQuestion, 2080);
 }
 
-function setStatusClass(element, correct) {
-    if (correct) {
-        element.classList.add('correct');
-    } else {
-        element.classList.add('wrong');
-    }
+function disableAnswers() {
+    const buttons = answersContainer.querySelectorAll("button");
+    buttons.forEach(button => button.setAttribute("disabled", true));
 }
 
 function nextQuestion() {
@@ -152,12 +135,18 @@ function nextQuestion() {
 }
 
 function endQuiz() {
-    questionElement.textContent = "Quiz Finalizado! 🎉 Sua pontuação foi ${score}/${questions.length}.";
-    feedbackMessage.textContent = score === questions.length ? "Parabéns! Você acertou todas!" : "Bom trabalho! Tente melhorar sua pontuação!";
-    restartButton.classList.remove('hidden');
+    feedbackMessage.innerHTML = `Quiz Finalizado! 🎉 <br> Sua pontuação foi ${score}/${questions.length}`;
+    if (score >= 3) {
+        feedbackMessage.innerHTML += "<br> Parabéns! Você acertou 3 ou mais perguntas!";
+    } else {
+        feedbackMessage.innerHTML += "<br> Tente melhorar sua pontuação na próxima vez!";
+    }
+    answersContainer.classList.add('d-none');
+    restartButton.classList.remove('d-none');
 }
 
-restartButton.addEventListener('click', startGame);
-nextButton.addEventListener('click', nextQuestion);
+restartButton.addEventListener('click', () => {
+    location.reload();  // Isso recarrega a página e reinicia o jogo
+});
 
 startGame();
