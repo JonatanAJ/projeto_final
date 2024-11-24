@@ -117,7 +117,7 @@ function checkAnswer(answer, button, explanation) {
     explanationElement.classList.remove("d-none");
     
     // Aguardar 3 segundos (3000 ms) antes de ir para a próxima pergunta
-    setTimeout(nextQuestion, 2080);
+    setTimeout(nextQuestion, 3000);
 }
 
 function disableAnswers() {
