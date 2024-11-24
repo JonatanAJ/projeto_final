@@ -1,0 +1,113 @@
+/* Estilo Geral */
+body {
+    background-color: #e6f7ff; 
+    color: #333;
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Container do Quiz */
+#quiz-container {
+    max-width: 500px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+    width: 100%;
+}
+
+/* Título */
+h1 {
+    font-size: 1.8rem;
+    color: #3b82f6; 
+}
+
+/* Pergunta */
+h2#question {
+    font-size: 1.4rem; 
+    color: #3b82f6;
+}
+
+/* Botões de Alternativas */
+#answers-container button {
+    font-size: 1.2rem;
+    color: white;
+    background-color: #3b82f6;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+#answers-container button:hover {
+    background-color: #285ea8; 
+}
+
+/* Botão de Próxima */
+#next-btn {
+    font-size: 1.2rem;
+    color: white;
+    background: linear-gradient(90deg, #3b82f6, #1e3a8a); 
+    border: none;
+    padding: 12px 20px;
+    border-radius: 50px; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+#next-btn:hover {
+    background: linear-gradient(90deg, #1e3a8a, #3b82f6); 
+    transform: translateY(-2px); 
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+#next-btn:active {
+    transform: translateY(0); 
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Botão Refazer Quiz */
+#restart-btn {
+    font-size: 1.2rem;
+    color: #3b82f6;
+    background-color: transparent;
+    border: 2px solid #3b82f6;
+    padding: 10px 20px;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+#restart-btn:hover {
+    background-color: #3b82f6;
+    color: white;
+}
+
+/* Temporizador */
+#timer-count {
+    font-size: 1.6rem; 
+    color: #3b82f6;
+}
+
+/* Responsividade */
+@media (max-width: 576px) {
+    h1 {
+        font-size: 1.5rem; 
+    }
+    h2#question {
+        font-size: 1.2rem;
+    }
+    #answers-container button {
+        font-size: 1rem;
+        padding: 8px;
+    }
+    #next-btn, #restart-btn {
+        font-size: 1rem;
+        padding: 8px 16px;
+    }
+}
