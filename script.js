@@ -72,7 +72,7 @@ function startGame() {
 }
 
 function startTimer() {
-    timeLeft = 20;
+    timeLeft = 30;
     timerElement.textContent = timeLeft;
     timer = setInterval(() => {
         timeLeft--;
@@ -135,6 +135,9 @@ function nextQuestion() {
 }
 
 function endQuiz() {
+    // Ocultar o contador de tempo ao final
+    timerElement.classList.add('d-none');
+    
     feedbackMessage.innerHTML = `Quiz Finalizado! 🎉 <br> Sua pontuação foi ${score}/${questions.length}`;
     if (score >= 3) {
         feedbackMessage.innerHTML += "<br> Parabéns! Você acertou 3 ou mais perguntas!";
@@ -150,3 +153,4 @@ restartButton.addEventListener('click', () => {
 });
 
 startGame();
+
